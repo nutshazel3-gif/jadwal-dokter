@@ -1,86 +1,420 @@
+ChatGPT said:
+Bisa. Berikut HTML + CSS yang meniru tampilan pada gambar: tabel jadwal dokter dengan warna baris, garis grid, ukuran kolom, dan susunan Senin–Sabtu yang dibuat semirip mungkin.
+
+Simpan sebagai jadwal-dokter.html, lalu buka di browser.
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jadwal Dokter Poli</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f6f9; color: #333; }
-        h2 { text-align: center; color: #1a5276; }
-        .filter-box { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; }
-        select { padding: 8px 12px; font-size: 14px; border-radius: 5px; border: 1px solid #ccc; }
-        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-        th { background-color: #2e86c1; color: white; }
-        tr:nth-child(even) { background-color: #f9f9f9; }
-        .offline-status { text-align: center; font-size: 12px; color: #7f8c8d; margin-top: 15px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jadwal Dokter</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        padding: 25px;
+        background: #cdb99b;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #111;
+    }
+
+    .paper {
+        width: 100%;
+        max-width: 1100px;
+        margin: auto;
+        padding: 8px;
+        background: #eee;
+        border: 1px solid #777;
+        box-shadow:
+            0 0 0 2px rgba(255,255,255,.35) inset,
+            0 2px 8px rgba(0,0,0,.25);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        background: #fff;
+        font-size: 14px;
+    }
+
+    th, td {
+        border: 1px solid #5f6c75;
+        text-align: center;
+        vertical-align: middle;
+        padding: 7px 4px;
+        height: 39px;
+    }
+
+    th {
+        font-weight: normal;
+        font-size: 14px;
+    }
+
+    /* Kolom nama poli */
+    .poli {
+        width: 8%;
+        font-weight: bold;
+        font-size: 14px;
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        background: #b9d3e7;
+    }
+
+    /* Kolom hari */
+    .hari {
+        width: 15.33%;
+        background: #dcecf5;
+        font-weight: bold;
+        color: #174c70;
+        height: 43px;
+    }
+
+    .dokter {
+        background: #f7f7f7;
+    }
+
+    /* Warna sel dokter */
+    .biru {
+        background: #c7def0;
+    }
+
+    .hijau {
+        background: #8fcf9d;
+    }
+
+    .kuning {
+        background: #e9d55d;
+    }
+
+    .merah {
+        background: #dc8290;
+    }
+
+    .ungu {
+        background: #c9a8d8;
+    }
+
+    .putih {
+        background: #f4f4f4;
+    }
+
+    /* Baris judul kelompok */
+    .group {
+        font-weight: bold;
+        color: #222;
+        letter-spacing: .2px;
+    }
+
+    .group-umum {
+        background: #dfc35b;
+    }
+
+    .group-mcu {
+        background: #68b5aa;
+    }
+
+    .group-pagi {
+        background: #e4cf55;
+    }
+
+    .group-siang {
+        background: #df8492;
+    }
+
+    .group-malam {
+        background: #65a98d;
+    }
+
+    /* Sel kosong */
+    .kosong {
+        background: #24303a;
+    }
+
+    .label {
+        font-weight: bold;
+        color: #16496c;
+    }
+
+    .section-title {
+        font-weight: bold;
+        text-align: left;
+        padding-left: 8px;
+    }
+
+    @media (max-width: 800px) {
+        body {
+            padding: 10px;
+        }
+
+        .paper {
+            overflow-x: auto;
+        }
+
+        table {
+            min-width: 950px;
+            font-size: 12px;
+        }
+
+        th, td {
+            height: 34px;
+            padding: 5px 3px;
+        }
+    }
+
+    @media print {
+        body {
+            background: white;
+            padding: 0;
+        }
+
+        .paper {
+            max-width: none;
+            border: none;
+            box-shadow: none;
+        }
+    }
+</style>
 </head>
+
 <body>
 
-    <h2>JADWAL DOKTER POLI</h2>
+<div class="paper">
 
-    <div class="filter-box">
-        <select id="filterHari" onchange="filterData()">
-            <option value="Semua">-- Semua Hari --</option>
-            <option value="SENIN">Senin</option>
-            <option value="SELASA">Selasa</option>
-            <option value="RABU">Rabu</option>
-            <option value="KAMIS">Kamis</option>
-            <option value="JUMAT">Jumat</option>
-            <option value="SABTU">Sabtu</option>
-        </select>
-    </div>
+<table>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Poli / Unit</th>
-                <th>Shift</th>
-                <th>Hari</th>
-                <th>Dokter Bertugas</th>
-            </tr>
-        </thead>
-        <tbody id="tabelJadwal">
-            <!-- Data dimasukkan via script -->
-        </tbody>
-    </table>
+    <!-- ================= POLI UMUM PAGI ================= -->
+    <tr>
+        <td class="poli group group-umum" rowspan="4">
+            POLI UMUM
+        </td>
 
-    <div class="offline-status">✓ Mode Sistem: Online & Offline</div>
+        <th class="hari">SENIN</th>
+        <th class="hari">SELASA</th>
+        <th class="hari">RABU</th>
+        <th class="hari">KAMIS</th>
+        <th class="hari">JUMAT</th>
+        <th class="hari">SABTU</th>
+    </tr>
 
-    <script>
-        const dataJadwal = [
-            { poli: "Poli Umum", shift: "Pagi (A)", hari: "SENIN", dokter: "dr. Irma" },
-            { poli: "Poli Umum", shift: "Pagi (A)", hari: "SELASA", dokter: "dr. Endang" },
-            { poli: "Poli Umum", shift: "Pagi (A)", hari: "RABU", dokter: "dr. Rizky" },
-            { poli: "Poli Umum", shift: "Pagi (A)", hari: "KAMIS", dokter: "dr. Rachma" },
-            { poli: "Poli Umum", shift: "Pagi (A)", hari: "JUMAT", dokter: "dr. Pristy" },
-            { poli: "Poli Umum", shift: "Pagi (A)", hari: "SABTU", dokter: "dr. Irma" },
-            { poli: "Poli Gigi", shift: "Pagi (Gigi 1)", hari: "SENIN", dokter: "drg. Riris" },
-            { poli: "Poli Gigi", shift: "Pagi (Gigi 1)", hari: "SELASA", dokter: "drg. Riris" },
-            { poli: "Poli Gigi", shift: "Pagi (Gigi 1)", hari: "RABU", dokter: "drg. Riris" }
-        ];
+    <tr>
+        <td class="biru">A<br><small>dr. Fitra</small></td>
+        <td class="biru">A<br><small>dr. Endang</small></td>
+        <td class="biru">dr. Rizky</td>
+        <td class="biru">dr. Rachma</td>
+        <td class="biru">dr. Pristy</td>
+        <td class="biru">dr. Irma</td>
+    </tr>
 
-        function tampilkanJadwal(list) {
-            const tbody = document.getElementById("tabelJadwal");
-            tbody.innerHTML = "";
-            list.forEach(item => {
-                tbody.innerHTML += `<tr>
-                    <td><b>${item.poli}</b></td>
-                    <td>${item.shift}</td>
-                    <td>${item.hari}</td>
-                    <td><b>${item.dokter}</b></td>
-                </tr>`;
-            });
-        }
+    <tr>
+        <td class="hijau">B<br><small>dr. Pristy</small></td>
+        <td class="hijau">dr. Rizky</td>
+        <td class="hijau">dr. Endang</td>
+        <td class="hijau">dr. Fadli</td>
+        <td class="hijau">dr. Endang</td>
+        <td class="hijau">dr. Pristy</td>
+    </tr>
 
-        function filterData() {
-            const hari = document.getElementById("filterHari").value;
-            const hasil = hari === "Semua" ? dataJadwal : dataJadwal.filter(d => d.hari === hari);
-            tampilkanJadwal(hasil);
-        }
+    <tr>
+        <td class="biru">MCU<br><small>dr. Endang</small></td>
+        <td class="biru">dr. Aini</td>
+        <td class="biru">dr. Pristy</td>
+        <td class="biru">dr. Rizky</td>
+        <td class="biru">dr. Irma</td>
+        <td class="biru">dr. Emang</td>
+    </tr>
 
-        tampilkanJadwal(dataJadwal);
-    </script>
+
+    <!-- ================= POLI UMUM MALAM ================= -->
+    <tr>
+        <td class="poli group group-mcu" rowspan="3">
+            POLI UMUM
+        </td>
+
+        <td class="label biru">SENIN</td>
+        <td class="label biru">SELASA</td>
+        <td class="label biru">RABU</td>
+        <td class="label biru">KAMIS</td>
+        <td class="label biru">JUMAT</td>
+        <td class="label biru">SABTU</td>
+    </tr>
+
+    <tr>
+        <td class="putih">dr. Achi</td>
+        <td class="putih">dr. Adhe</td>
+        <td class="putih">dr. Achi</td>
+        <td class="putih">dr. Irma</td>
+        <td class="putih">dr. Emang</td>
+        <td class="putih">dr. Irma</td>
+    </tr>
+
+    <tr>
+        <td class="kuning">B</td>
+        <td class="kuning">dr. Adhe</td>
+        <td class="kuning">dr. Irma</td>
+        <td class="kuning">dr. Emang</td>
+        <td class="kuning">dr. Irma</td>
+        <td class="kuning">dr. Irma</td>
+    </tr>
+
+
+    <!-- ================= POLI PAGI ================= -->
+    <tr>
+        <td class="poli group group-pagi" rowspan="4">
+            POLI PAGI
+        </td>
+
+        <td class="label biru">SENIN</td>
+        <td class="label biru">SELASA</td>
+        <td class="label biru">RABU</td>
+        <td class="label biru">KAMIS</td>
+        <td class="label biru">JUMAT</td>
+        <td class="label biru">SABTU</td>
+    </tr>
+
+    <tr>
+        <td class="biru">GIGI 1<br><small>drg. Farris</small></td>
+        <td class="biru">drg. Farris</td>
+        <td class="biru">drg. Farris</td>
+        <td class="biru">drg. Farris</td>
+        <td class="biru">drg. Farris</td>
+        <td class="biru">drg. Farris</td>
+    </tr>
+
+    <tr>
+        <td class="kuning">GIGI 2<br><small>drg. Renita</small></td>
+        <td class="kuning">drg. Renita</td>
+        <td class="kuning">drg. Renita</td>
+        <td class="kuning">drg. Renita</td>
+        <td class="kuning">drg. Renita</td>
+        <td class="kuning">drg. Renita</td>
+    </tr>
+
+    <tr>
+        <td class="merah">GIGI 3<br><small>drg. Rachmat</small></td>
+        <td class="merah">drg. Nasya</td>
+        <td class="merah">drg. Rachmat</td>
+        <td class="merah">drg. Rachmat</td>
+        <td class="merah">drg. Nasya</td>
+        <td class="merah">drg. Rachmat</td>
+    </tr>
+
+
+    <!-- ================= POLI GIGI SIANG ================= -->
+    <tr>
+        <td class="poli group group-siang" rowspan="2">
+            POLI GIGI SIANG
+        </td>
+
+        <td class="label biru">SENIN</td>
+        <td class="label biru">SELASA</td>
+        <td class="label biru">RABU</td>
+        <td class="label biru">KAMIS</td>
+        <td class="label biru">JUMAT</td>
+        <td class="label biru">SABTU</td>
+    </tr>
+
+    <tr>
+        <td class="merah">drg. Nasya</td>
+        <td class="merah">drg. Nasya</td>
+        <td class="merah">drg. Nasya</td>
+        <td class="merah">drg. Nasya</td>
+        <td class="merah">drg. Nasya</td>
+        <td class="merah">drg. Nasya</td>
+    </tr>
+
+
+    <!-- ================= POLI GIGI MALAM ================= -->
+    <tr>
+        <td class="poli group group-malam" rowspan="4">
+            GIGI PAGI
+        </td>
+
+        <td class="label biru">SENIN</td>
+        <td class="label biru">SELASA</td>
+        <td class="label biru">RABU</td>
+        <td class="label biru">KAMIS</td>
+        <td class="label biru">JUMAT</td>
+        <td class="label biru">SABTU</td>
+    </tr>
+
+    <tr>
+        <td class="biru">GIGI 1<br><small>drg. Farris</small></td>
+        <td class="biru">drg. Farris</td>
+        <td class="biru">drg. Farris</td>
+        <td class="biru">drg. Farris</td>
+        <td class="biru">drg. Farris</td>
+        <td class="biru">drg. Farris</td>
+    </tr>
+
+    <tr>
+        <td class="hijau">GIGI 2<br><small>drg. Renita</small></td>
+        <td class="hijau">drg. Renita</td>
+        <td class="hijau">drg. Renita</td>
+        <td class="hijau">drg. Renita</td>
+        <td class="hijau">drg. Renita</td>
+        <td class="hijau">drg. Renita</td>
+    </tr>
+
+    <tr>
+        <td class="kuning">GIGI 3<br><small>drg. Rachmat</small></td>
+        <td class="kuning">drg. Rachmat</td>
+        <td class="kuning">drg. Rachmat</td>
+        <td class="kuning">drg. Rachmat</td>
+        <td class="kuning">drg. Rachmat</td>
+        <td class="kuning">drg. Rachmat</td>
+    </tr>
+
+
+    <!-- ================= BARIS BAWAH ================= -->
+    <tr>
+        <td class="poli group group-malam" rowspan="4">
+            GIGI PAGI
+        </td>
+
+        <td class="label biru">SENIN</td>
+        <td class="label biru">SELASA</td>
+        <td class="label biru">RABU</td>
+        <td class="label biru">KAMIS</td>
+        <td class="label biru">JUMAT</td>
+        <td class="label biru">SABTU</td>
+    </tr>
+
+    <tr>
+        <td class="biru">GIGI 1<br><small>drg. Farris</small></td>
+        <td class="biru">drg. Farris</td>
+        <td class="biru">drg. Farris</td>
+        <td class="biru">drg. Farris</td>
+        <td class="biru">drg. Farris</td>
+        <td class="biru">drg. Farris</td>
+    </tr>
+
+    <tr>
+        <td class="hijau">GIGI 2<br><small>drg. Renita</small></td>
+        <td class="hijau">drg. Renita</td>
+        <td class="hijau">drg. Renita</td>
+        <td class="hijau">drg. Renita</td>
+        <td class="hijau">drg. Renita</td>
+        <td class="hijau">drg. Renita</td>
+    </tr>
+
+    <tr>
+        <td class="kuning">GIGI 3<br><small>drg. Rachmat</small></td>
+        <td class="kuning">drg. Rachmat</td>
+        <td class="kuning">drg. Rachmat</td>
+        <td class="kuning">drg. Rachmat</td>
+        <td class="kuning">drg. Rachmat</td>
+        <td class="kosong"></td>
+    </tr>
+
+</table>
+
+</div>
+
 </body>
 </html>
