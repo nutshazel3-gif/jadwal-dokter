@@ -71,68 +71,124 @@
 
 
         /* =====================================================
-   WARNA KONTRAS DOKTER
-   Setiap dokter menggunakan warna yang berbeda
+   WARNA DOKTER - KONTRAS
+   TEKS SELALU HITAM
    ===================================================== */
 
 .doc-irma {
-    background-color: #ef5350; /* Merah */
-    color: #ffffff;
+    background-color: #ef5350;
+    color: #000000;
 }
 
 .doc-endang {
-    background-color: #ec407a; /* Pink */
-    color: #ffffff;
+    background-color: #ec407a;
+    color: #000000;
 }
 
 .doc-rizky {
-    background-color: #43a047; /* Hijau */
-    color: #ffffff;
+    background-color: #43a047;
+    color: #000000;
 }
 
 .doc-rachma {
-    background-color: #8e44ad; /* Ungu */
-    color: #ffffff;
+    background-color: #8e44ad;
+    color: #000000;
 }
 
 .doc-pristy {
-    background-color: #f9a825; /* Kuning Tua */
+    background-color: #f9a825;
     color: #000000;
 }
 
 .doc-aiiii {
-    background-color: #fb8c00; /* Oranye */
-    color: #ffffff;
+    background-color: #fb8c00;
+    color: #000000;
 }
 
 .doc-adhe {
-    background-color: #5e35b1; /* Ungu Tua */
-    color: #ffffff;
+    background-color: #5e35b1;
+    color: #000000;
 }
 
 .doc-riris {
-    background-color: #00897b; /* Teal */
-    color: #ffffff;
+    background-color: #00897b;
+    color: #000000;
 }
 
 .doc-reanita {
-    background-color: #1e88e5; /* Biru */
-    color: #ffffff;
+    background-color: #1e88e5;
+    color: #000000;
 }
 
 .doc-nasya {
-    background-color: #fdd835; /* Kuning */
+    background-color: #fdd835;
     color: #000000;
 }
 
 .doc-rachmat {
-    background-color: #d84315; /* Jingga Merah */
-    color: #ffffff;
+    background-color: #d84315;
+    color: #000000;
 }
 
 .doc-oktarina {
-    background-color: #039be5; /* Biru Langit */
-    color: #ffffff;
+    background-color: #039be5;
+    color: #000000;
+}
+
+
+/* =====================================================
+   TEKS DOKTER
+   ===================================================== */
+
+td[class^="doc-"] {
+    color: #000000 !important;
+    font-weight: 600;
+    cursor: pointer;
+
+    /* Animasi hover */
+    transition:
+        transform 0.18s ease,
+        filter 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+
+/* =====================================================
+   EFEK HOVER
+   ===================================================== */
+
+td[class^="doc-"]:hover {
+    color: #000000 !important;
+
+    /* Sedikit membesar */
+    transform: scale(1.04);
+
+    /* Sedikit lebih terang */
+    filter: brightness(1.12);
+
+    /* Bayangan agar menonjol */
+    box-shadow:
+        0 3px 8px rgba(0, 0, 0, 0.35);
+
+    /* Berada di atas sel lain */
+    position: relative;
+    z-index: 10;
+}
+
+
+/* Pastikan tulisan kecil di dalam sel juga hitam */
+td[class^="doc-"] small {
+    color: #000000 !important;
+}
+
+
+/* =====================================================
+   OPSIONAL: EFEK SAAT MOUSE DITEKAN
+   ===================================================== */
+
+td[class^="doc-"]:active {
+    transform: scale(0.98);
+    filter: brightness(0.95);
 }
 
 
