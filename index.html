@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadwal Dokter Poli & Gigi</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 15px; background-color: #f4f6f9; }
+        h2 { text-align: center; color: #1a5276; }
+        .filter-container { display: flex; gap: 10px; margin-bottom: 15px; justify-content: center; }
+        select { padding: 8px 12px; font-size: 14px; border-radius: 5px; border: 1px solid #ccc; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #2e86c1; color: white; }
+        .pagi { background-color: #eaf2f8; }
+        .siang { background-color: #fef9e7; }
+        .malam { background-color: #e8f8f5; }
+        .offline-tag { text-align: center; font-size: 12px; color: #7f8c8d; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <h2>JADWAL DOKTER POLI</h2>
+
+    <div class="filter-container">
+        <select id="filterHari" onchange="filterJadwal()">
+            <option value="Semua">-- Semua Hari --</option>
+            <option value="SENIN">Senin</option>
+            <option value="SELASA">Selasa</option>
+            <option value="RABU">Rabu</option>
+            <option value="KAMIS">Kamis</option>
+            <option value="JUMAT">Jumat</option>
+            <option value="SABTU">Sabtu</option>
+        </select>
+
+        <select id="filterPoli" onchange="filterJadwal()">
+            <option value="Semua">-- Semua Poli --</option>
+            <option value="Poli Umum">Poli Umum</option>
+            <option value="Poli Gigi">Poli Gigi</option>
+            <option value="MCU">MCU</option>
+        </select>
+    </div>
+
+    <table id="tabelJadwal">
+        <thead>
+            <tr>
+                <th>Poli / Unit</th>
+                <th>Shift</th>
+                <th>Hari</th>
+                <th>Dokter Bertugas</th>
+            </tr>
+        </thead>
+        <tbody id="dataJadwal">
+            <!-- Data dimasukkan via JS -->
+        </tbody>
+    </table>
+
+    <div class="offline-tag">✓ Mode Sistem: Tersedia Offline & Online</div>
+
+    <script>
+        const jadwalData = [
+            // Poli Umum Pagi
+            { poli: "Poli Umum", shift: "Pagi (A)", hari: "SENIN", dokter: "dr. Irma" },
+            { poli: "Poli Umum", shift: "Pagi (A)", hari: "SELASA", dokter: "dr. Endang" },
+            { poli: "Poli Umum", shift: "Pagi (A)", hari: "RABU", dokter: "dr. Rizky" },
+            { poli: "Poli Umum", shift: "Pagi (A)", hari: "KAMIS", dokter: "dr. Rachma" },
+            { poli: "Poli Umum", shift: "Pagi (A)", hari: "JUMAT", dokter: "dr. Pristy" },
+            { poli: "Poli Umum", shift: "Pagi (A)", hari: "SABTU", dokter: "dr. Irma" },
+            
+            // Poli Gigi Pagi
+            { poli: "Poli Gigi", shift: "Pagi (Gigi 1)", hari: "SENIN", dokter: "drg. Riris" },
+            { poli: "Poli Gigi", shift: "Pagi (Gigi 1)", hari: "SELASA", dokter: "drg. Riris" },
+            { poli: "Poli Gigi", shift: "Pagi (Gigi 1)", hari: "RABU", dokter: "drg. Riris" },
+            { poli: "Poli Gigi", shift: "Pagi (Gigi 1)", hari: "KAMIS", dokter: "drg. Riris" },
+            { poli: "Poli Gigi", shift: "Pagi (Gigi 1)", hari: "JUMAT", dokter: "drg. Riris" },
+            { poli: "Poli Gigi", shift: "Pagi (Gigi 1)", hari: "SABTU", dokter: "drg. Riris" },
+
+            // Tambahkan data lainnya sesuai jadwal fisik...
+        ];
+
+        function renderTabel(data) {
+            const tbody = document.getElementById("dataJadwal");
+            tbody.innerHTML = "";
+            data.forEach(item => {
+                let shiftClass = item.shift.toLowerCase().includes("pagi") ? "pagi" : 
+                                 item.shift.toLowerCase().includes("siang") ? "siang" : "malam";
+                let row = `<tr class="${shiftClass}">
+                    <td><b>${item.poli}</b></td>
+                    <td>${item.shift}</td>
+                    <td>${item.hari}</td>
+                    <td><b>${item.dokter}</b></td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function filterJadwal() {
+            let hari = document.getElementById("filterHari").value;
+            let poli = document.getElementById("filterPoli").value;
+
+            let filtered = jadwalData.filter(item => {
+                let matchHari = (hari === "Semua" || item.hari === hari);
+                let matchPoli = (poli === "Semua" || item.poli === poli);
+                return matchHari && matchPoli;
+            });
+
+            renderTabel(filtered);
+        }
+
+        // Simpan data di local storage agar bisa dibuka saat offline
+        localStorage.setItem("jadwalDokter", JSON.stringify(jadwalData));
+        renderTabel(jadwalData);
+    </script>
+</body>
+</html>
