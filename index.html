@@ -1,415 +1,285 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jadwal Dokter</title>
-
-<style>
-    * {
-        box-sizing: border-box;
-    }
-
-    body {
-        margin: 0;
-        padding: 25px;
-        background: #cdb99b;
-        font-family: Arial, Helvetica, sans-serif;
-        color: #111;
-    }
-
-    .paper {
-        width: 100%;
-        max-width: 1100px;
-        margin: auto;
-        padding: 8px;
-        background: #eee;
-        border: 1px solid #777;
-        box-shadow:
-            0 0 0 2px rgba(255,255,255,.35) inset,
-            0 2px 8px rgba(0,0,0,.25);
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        table-layout: fixed;
-        background: #fff;
-        font-size: 14px;
-    }
-
-    th, td {
-        border: 1px solid #5f6c75;
-        text-align: center;
-        vertical-align: middle;
-        padding: 7px 4px;
-        height: 39px;
-    }
-
-    th {
-        font-weight: normal;
-        font-size: 14px;
-    }
-
-    /* Kolom nama poli */
-    .poli {
-        width: 8%;
-        font-weight: bold;
-        font-size: 14px;
-        writing-mode: vertical-rl;
-        transform: rotate(180deg);
-        background: #b9d3e7;
-    }
-
-    /* Kolom hari */
-    .hari {
-        width: 15.33%;
-        background: #dcecf5;
-        font-weight: bold;
-        color: #174c70;
-        height: 43px;
-    }
-
-    .dokter {
-        background: #f7f7f7;
-    }
-
-    /* Warna sel dokter */
-    .biru {
-        background: #c7def0;
-    }
-
-    .hijau {
-        background: #8fcf9d;
-    }
-
-    .kuning {
-        background: #e9d55d;
-    }
-
-    .merah {
-        background: #dc8290;
-    }
-
-    .ungu {
-        background: #c9a8d8;
-    }
-
-    .putih {
-        background: #f4f4f4;
-    }
-
-    /* Baris judul kelompok */
-    .group {
-        font-weight: bold;
-        color: #222;
-        letter-spacing: .2px;
-    }
-
-    .group-umum {
-        background: #dfc35b;
-    }
-
-    .group-mcu {
-        background: #68b5aa;
-    }
-
-    .group-pagi {
-        background: #e4cf55;
-    }
-
-    .group-siang {
-        background: #df8492;
-    }
-
-    .group-malam {
-        background: #65a98d;
-    }
-
-    /* Sel kosong */
-    .kosong {
-        background: #24303a;
-    }
-
-    .label {
-        font-weight: bold;
-        color: #16496c;
-    }
-
-    .section-title {
-        font-weight: bold;
-        text-align: left;
-        padding-left: 8px;
-    }
-
-    @media (max-width: 800px) {
-        body {
-            padding: 10px;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadwal Dokter Poli</title>
+    <!-- Web App Manifest untuk PWA -->
+    <link rel="manifest" href="data:application/manifest+json,{
+        %22name%22:%22Jadwal%20Dokter%20Poli%22,
+        %22short_name%22:%22JadwalDokter%22,
+        %22start_url%22:%22.%22,
+        %22display%22:%22standalone%22,
+        %22background_color%22:%22#cdb99b%22,
+        %22theme_color%22:%22#174c70%22
+    }">
+    <style>
+        * {
+            box-sizing: border-box;
         }
-
+        body {
+            margin: 0;
+            padding: 15px;
+            background: #cdb99b;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #111;
+        }
         .paper {
+            width: 100%;
+            max-width: 1100px;
+            margin: auto;
+            padding: 8px;
+            background: #eee;
+            border: 1px solid #777;
+            box-shadow: 0 0 0 2px rgba(255,255,255,.35) inset, 0 2px 8px rgba(0,0,0,.25);
             overflow-x: auto;
         }
-
         table {
-            min-width: 950px;
-            font-size: 12px;
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            background: #fff;
+            font-size: 13px;
+            min-width: 800px;
         }
-
         th, td {
-            height: 34px;
-            padding: 5px 3px;
+            border: 1px solid #333;
+            text-align: center;
+            vertical-align: middle;
+            padding: 6px 3px;
+            height: 38px;
+            word-wrap: break-word;
         }
-    }
+        th {
+            font-weight: bold;
+        }
 
-    @media print {
-        body {
-            background: white;
-            padding: 0;
+        /* Kolom Header & Kategori */
+        .header-jadwal {
+            background-color: #2b78b5;
+            color: white;
+            font-weight: bold;
+            letter-spacing: 1px;
+            font-size: 14px;
+        }
+        .header-gigi-malam {
+            background-color: #1a8a59;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .header-gigi-siang {
+            background-color: #c0392b;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .poli-label {
+            width: 14%;
+            font-weight: bold;
+            font-size: 13px;
+            background: #e1edf7;
+            color: #0f3854;
+        }
+        .hari-header {
+            width: 14.33%;
+            background: #dcecf5;
+            font-weight: bold;
+            color: #174c70;
+            height: 35px;
         }
 
-        .paper {
-            max-width: none;
-            border: none;
-            box-shadow: none;
+        /* Pewarnaan Sel Berdasarkan Gambar Fisik */
+        .bg-biru-muda { background-color: #d4e6f1; }
+        .bg-hijau-muda { background-color: #d5f5e3; }
+        .bg-kuning-muda { background-color: #fcf3cf; }
+        .bg-merah-muda { background-color: #fadbd8; }
+        .bg-ungu-muda { background-color: #ebdef0; }
+        .bg-putih { background-color: #ffffff; }
+        .bg-kosong { background-color: #2c3e50; }
+
+        .dokter-name {
+            font-weight: bold;
+            font-size: 13px;
         }
-    }
-</style>
+
+        /* Status PWA Offline */
+        .status-bar {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #154360;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 5px; }
+            .paper { padding: 4px; }
+            table { font-size: 11px; }
+            th, td { height: 32px; padding: 3px 1px; }
+        }
+    </style>
 </head>
-
 <body>
 
 <div class="paper">
+    <table>
+        <!-- ================= POLI UMUM PAGI ================= -->
+        <tr>
+            <td colspan="7" class="header-jadwal">JADWAL DOKTER POLI UMUM PAGI</td>
+        </tr>
+        <tr>
+            <td class="poli-label">POLI UMUM<br>A</td>
+            <th class="hari-header">SENIN</th>
+            <th class="hari-header">SELASA</th>
+            <th class="hari-header">RABU</th>
+            <th class="hari-header">KAMIS</th>
+            <th class="hari-header">JUMAT</th>
+            <th class="hari-header">SABTU</th>
+        </tr>
+        <tr class="bg-biru-muda">
+            <td class="poli-label">A</td>
+            <td class="dokter-name">dr. Irma</td>
+            <td class="dokter-name">dr. Endang</td>
+            <td class="dokter-name">dr. Rizky</td>
+            <td class="dokter-name">dr. Rachma</td>
+            <td class="dokter-name">dr. Pristy</td>
+            <td class="dokter-name">dr. Irma</td>
+        </tr>
+        <tr class="bg-hijau-muda">
+            <td class="poli-label">B</td>
+            <td class="dokter-name">dr. Pristy</td>
+            <td class="dokter-name">dr. Rizky</td>
+            <td class="dokter-name">dr. Aiiii</td>
+            <td class="dokter-name">dr. Endang</td>
+            <td class="dokter-name">dr. Pristy</td>
+            <td class="dokter-name">dr. Pristy</td>
+        </tr>
+        <tr class="bg-kuning-muda">
+            <td class="poli-label">MCU</td>
+            <td class="dokter-name">dr. Endang</td>
+            <td class="dokter-name">dr. Aiiii</td>
+            <td class="dokter-name">dr. Pristy</td>
+            <td class="dokter-name">dr. Rizky</td>
+            <td class="dokter-name">dr. Endang</td>
+            <td class="dokter-name">dr. Endang</td>
+        </tr>
 
-<table>
+        <!-- ================= POLI UMUM MALAM ================= -->
+        <tr>
+            <td colspan="7" class="header-gigi-malam">JADWAL DOKTER POLI UMUM MALAM</td>
+        </tr>
+        <tr class="bg-biru-muda">
+            <td class="poli-label">POLI UMUM<br>B</td>
+            <td class="dokter-name">dr. Adhe</td>
+            <td class="dokter-name">dr. Adhe</td>
+            <td class="dokter-name">dr. Adhe</td>
+            <td class="dokter-name">dr. Irma</td>
+            <td class="dokter-name">dr. Endang</td>
+            <td class="dokter-name">dr. Irma</td>
+        </tr>
 
-    <!-- ================= POLI UMUM PAGI ================= -->
-    <tr>
-        <td class="poli group group-umum" rowspan="4">
-            POLI UMUM
-        </td>
+        <!-- ================= POLI GIGI PAGI ================= -->
+        <tr>
+            <td colspan="7" class="header-jadwal">JADWAL DOKTER POLI GIGI PAGI</td>
+        </tr>
+        <tr class="bg-hijau-muda">
+            <td class="poli-label">GIGI PAGI<br>GIGI 1</td>
+            <td class="dokter-name">drg. Riris</td>
+            <td class="dokter-name">drg. Riris</td>
+            <td class="dokter-name">drg. Riris</td>
+            <td class="dokter-name">drg. Riris</td>
+            <td class="dokter-name">drg. Riris</td>
+            <td class="dokter-name">drg. Riris</td>
+        </tr>
+        <tr class="bg-biru-muda">
+            <td class="poli-label">GIGI 2</td>
+            <td class="dokter-name">drg. Reanita</td>
+            <td class="dokter-name">drg. Reanita</td>
+            <td class="dokter-name">drg. Reanita</td>
+            <td class="dokter-name">drg. Reanita</td>
+            <td class="dokter-name">drg. Reanita</td>
+            <td class="dokter-name">drg. Reanita</td>
+        </tr>
+        <tr class="bg-kuning-muda">
+            <td class="poli-label">GIGI 3</td>
+            <td class="dokter-name">drg. Nasya</td>
+            <td class="dokter-name">drg. Rachmat</td>
+            <td class="dokter-name">drg. Nasya</td>
+            <td class="dokter-name">drg. Rachmat</td>
+            <td class="dokter-name">drg. Nasya</td>
+            <td class="dokter-name">drg. Rachmat</td>
+        </tr>
 
-        <th class="hari">SENIN</th>
-        <th class="hari">SELASA</th>
-        <th class="hari">RABU</th>
-        <th class="hari">KAMIS</th>
-        <th class="hari">JUMAT</th>
-        <th class="hari">SABTU</th>
-    </tr>
+        <!-- ================= POLI GIGI SIANG ================= -->
+        <tr>
+            <td colspan="7" class="header-gigi-siang">JADWAL DOKTER POLI GIGI SIANG</td>
+        </tr>
+        <tr class="bg-merah-muda">
+            <td class="poli-label">GIGI 3</td>
+            <td class="dokter-name" colspan="5">drg. Nasya</td>
+            <td class="bg-kosong"></td>
+        </tr>
 
-    <tr>
-        <td class="biru">A<br><small>dr. Fitra</small></td>
-        <td class="biru">A<br><small>dr. Endang</small></td>
-        <td class="biru">dr. Rizky</td>
-        <td class="biru">dr. Rachma</td>
-        <td class="biru">dr. Pristy</td>
-        <td class="biru">dr. Irma</td>
-    </tr>
+        <!-- ================= POLI GIGI MALAM ================= -->
+        <tr>
+            <td colspan="7" class="header-gigi-malam">JADWAL DOKTER POLI GIGI MALAM</td>
+        </tr>
+        <tr class="bg-hijau-muda">
+            <td class="poli-label">GIGI 1</td>
+            <td class="dokter-name">drg. Riris</td>
+            <td class="dokter-name">drg. Riris</td>
+            <td class="dokter-name">drg. Reanita</td>
+            <td class="dokter-name">drg. Riris</td>
+            <td class="dokter-name">drg. Nasya</td>
+            <td class="bg-kosong"></td>
+        </tr>
+        <tr class="bg-biru-muda">
+            <td class="poli-label">GIGI 2</td>
+            <td class="dokter-name">drg. Reanita</td>
+            <td class="dokter-name">drg. Reanita</td>
+            <td class="dokter-name">drg. Rachmat</td>
+            <td class="dokter-name">drg. Oktarina</td>
+            <td class="dokter-name" colspan="2" style="background:#2c3e50;"></td>
+        </tr>
+        <tr class="bg-kuning-muda">
+            <td class="poli-label">GIGI 3</td>
+            <td class="dokter-name">drg. Rachmat</td>
+            <td class="dokter-name">drg. Rachmat</td>
+            <td class="dokter-name">drg. Rachmat</td>
+            <td class="dokter-name" colspan="3" style="background:#2c3e50;"></td>
+        </tr>
+    </table>
 
-    <tr>
-        <td class="hijau">B<br><small>dr. Pristy</small></td>
-        <td class="hijau">dr. Rizky</td>
-        <td class="hijau">dr. Endang</td>
-        <td class="hijau">dr. Fadli</td>
-        <td class="hijau">dr. Endang</td>
-        <td class="hijau">dr. Pristy</td>
-    </tr>
-
-    <tr>
-        <td class="biru">MCU<br><small>dr. Endang</small></td>
-        <td class="biru">dr. Aini</td>
-        <td class="biru">dr. Pristy</td>
-        <td class="biru">dr. Rizky</td>
-        <td class="biru">dr. Irma</td>
-        <td class="biru">dr. Emang</td>
-    </tr>
-
-
-    <!-- ================= POLI UMUM MALAM ================= -->
-    <tr>
-        <td class="poli group group-mcu" rowspan="3">
-            POLI UMUM
-        </td>
-
-        <td class="label biru">SENIN</td>
-        <td class="label biru">SELASA</td>
-        <td class="label biru">RABU</td>
-        <td class="label biru">KAMIS</td>
-        <td class="label biru">JUMAT</td>
-        <td class="label biru">SABTU</td>
-    </tr>
-
-    <tr>
-        <td class="putih">dr. Achi</td>
-        <td class="putih">dr. Adhe</td>
-        <td class="putih">dr. Achi</td>
-        <td class="putih">dr. Irma</td>
-        <td class="putih">dr. Emang</td>
-        <td class="putih">dr. Irma</td>
-    </tr>
-
-    <tr>
-        <td class="kuning">B</td>
-        <td class="kuning">dr. Adhe</td>
-        <td class="kuning">dr. Irma</td>
-        <td class="kuning">dr. Emang</td>
-        <td class="kuning">dr. Irma</td>
-        <td class="kuning">dr. Irma</td>
-    </tr>
-
-
-    <!-- ================= POLI PAGI ================= -->
-    <tr>
-        <td class="poli group group-pagi" rowspan="4">
-            POLI PAGI
-        </td>
-
-        <td class="label biru">SENIN</td>
-        <td class="label biru">SELASA</td>
-        <td class="label biru">RABU</td>
-        <td class="label biru">KAMIS</td>
-        <td class="label biru">JUMAT</td>
-        <td class="label biru">SABTU</td>
-    </tr>
-
-    <tr>
-        <td class="biru">GIGI 1<br><small>drg. Farris</small></td>
-        <td class="biru">drg. Farris</td>
-        <td class="biru">drg. Farris</td>
-        <td class="biru">drg. Farris</td>
-        <td class="biru">drg. Farris</td>
-        <td class="biru">drg. Farris</td>
-    </tr>
-
-    <tr>
-        <td class="kuning">GIGI 2<br><small>drg. Renita</small></td>
-        <td class="kuning">drg. Renita</td>
-        <td class="kuning">drg. Renita</td>
-        <td class="kuning">drg. Renita</td>
-        <td class="kuning">drg. Renita</td>
-        <td class="kuning">drg. Renita</td>
-    </tr>
-
-    <tr>
-        <td class="merah">GIGI 3<br><small>drg. Rachmat</small></td>
-        <td class="merah">drg. Nasya</td>
-        <td class="merah">drg. Rachmat</td>
-        <td class="merah">drg. Rachmat</td>
-        <td class="merah">drg. Nasya</td>
-        <td class="merah">drg. Rachmat</td>
-    </tr>
-
-
-    <!-- ================= POLI GIGI SIANG ================= -->
-    <tr>
-        <td class="poli group group-siang" rowspan="2">
-            POLI GIGI SIANG
-        </td>
-
-        <td class="label biru">SENIN</td>
-        <td class="label biru">SELASA</td>
-        <td class="label biru">RABU</td>
-        <td class="label biru">KAMIS</td>
-        <td class="label biru">JUMAT</td>
-        <td class="label biru">SABTU</td>
-    </tr>
-
-    <tr>
-        <td class="merah">drg. Nasya</td>
-        <td class="merah">drg. Nasya</td>
-        <td class="merah">drg. Nasya</td>
-        <td class="merah">drg. Nasya</td>
-        <td class="merah">drg. Nasya</td>
-        <td class="merah">drg. Nasya</td>
-    </tr>
-
-
-    <!-- ================= POLI GIGI MALAM ================= -->
-    <tr>
-        <td class="poli group group-malam" rowspan="4">
-            GIGI PAGI
-        </td>
-
-        <td class="label biru">SENIN</td>
-        <td class="label biru">SELASA</td>
-        <td class="label biru">RABU</td>
-        <td class="label biru">KAMIS</td>
-        <td class="label biru">JUMAT</td>
-        <td class="label biru">SABTU</td>
-    </tr>
-
-    <tr>
-        <td class="biru">GIGI 1<br><small>drg. Farris</small></td>
-        <td class="biru">drg. Farris</td>
-        <td class="biru">drg. Farris</td>
-        <td class="biru">drg. Farris</td>
-        <td class="biru">drg. Farris</td>
-        <td class="biru">drg. Farris</td>
-    </tr>
-
-    <tr>
-        <td class="hijau">GIGI 2<br><small>drg. Renita</small></td>
-        <td class="hijau">drg. Renita</td>
-        <td class="hijau">drg. Renita</td>
-        <td class="hijau">drg. Renita</td>
-        <td class="hijau">drg. Renita</td>
-        <td class="hijau">drg. Renita</td>
-    </tr>
-
-    <tr>
-        <td class="kuning">GIGI 3<br><small>drg. Rachmat</small></td>
-        <td class="kuning">drg. Rachmat</td>
-        <td class="kuning">drg. Rachmat</td>
-        <td class="kuning">drg. Rachmat</td>
-        <td class="kuning">drg. Rachmat</td>
-        <td class="kuning">drg. Rachmat</td>
-    </tr>
-
-
-    <!-- ================= BARIS BAWAH ================= -->
-    <tr>
-        <td class="poli group group-malam" rowspan="4">
-            GIGI PAGI
-        </td>
-
-        <td class="label biru">SENIN</td>
-        <td class="label biru">SELASA</td>
-        <td class="label biru">RABU</td>
-        <td class="label biru">KAMIS</td>
-        <td class="label biru">JUMAT</td>
-        <td class="label biru">SABTU</td>
-    </tr>
-
-    <tr>
-        <td class="biru">GIGI 1<br><small>drg. Farris</small></td>
-        <td class="biru">drg. Farris</td>
-        <td class="biru">drg. Farris</td>
-        <td class="biru">drg. Farris</td>
-        <td class="biru">drg. Farris</td>
-        <td class="biru">drg. Farris</td>
-    </tr>
-
-    <tr>
-        <td class="hijau">GIGI 2<br><small>drg. Renita</small></td>
-        <td class="hijau">drg. Renita</td>
-        <td class="hijau">drg. Renita</td>
-        <td class="hijau">drg. Renita</td>
-        <td class="hijau">drg. Renita</td>
-        <td class="hijau">drg. Renita</td>
-    </tr>
-
-    <tr>
-        <td class="kuning">GIGI 3<br><small>drg. Rachmat</small></td>
-        <td class="kuning">drg. Rachmat</td>
-        <td class="kuning">drg. Rachmat</td>
-        <td class="kuning">drg. Rachmat</td>
-        <td class="kuning">drg. Rachmat</td>
-        <td class="kosong"></td>
-    </tr>
-
-</table>
-
+    <div class="status-bar">✓ Mode PWA Aktif: Dapat Diakses Secara Online & Offline</div>
 </div>
+
+<!-- Script PWA untuk caching offline -->
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            const swCode = `
+                const CACHE_NAME = 'jadwal-dokter-v1';
+                self.addEventListener('install', e => {
+                    e.waitUntil(
+                        caches.open(CACHE_NAME).then(cache => cache.addAll(['./']))
+                    );
+                });
+                self.addEventListener('fetch', e => {
+                    e.respondWith(
+                        caches.match(e.request).then(res => res || fetch(e.request))
+                    );
+                });
+            `;
+            const blob = new Blob([swCode], { type: 'application/javascript' });
+            const swUrl = URL.createObjectURL(blob);
+            
+            navigator.serviceWorker.register(swUrl)
+                .then(() => console.log('PWA Service Worker Registered!'))
+                .catch(err => console.log('SW Fail:', err));
+        });
+    }
+</script>
 
 </body>
 </html>
