@@ -19,18 +19,18 @@
         }
         body {
             margin: 0;
-            padding: 15px;
+            padding: 10px;
             background: #cdb99b;
             font-family: Arial, Helvetica, sans-serif;
-            color: #111;
+            color: #000;
         }
         .paper {
             width: 100%;
-            max-width: 1100px;
+            max-width: 1200px;
             margin: auto;
             padding: 8px;
             background: #eee;
-            border: 1px solid #777;
+            border: 2px solid #555;
             box-shadow: 0 0 0 2px rgba(255,255,255,.35) inset, 0 2px 8px rgba(0,0,0,.25);
             overflow-x: auto;
         }
@@ -39,84 +39,88 @@
             border-collapse: collapse;
             table-layout: fixed;
             background: #fff;
-            font-size: 13px;
-            min-width: 800px;
+            font-size: 15px; /* Ukuran teks diperbesar */
+            min-width: 900px;
         }
         th, td {
-            border: 1px solid #333;
+            border: 2px solid #222; /* Garis pembatas lebih tebal & jelas */
             text-align: center;
             vertical-align: middle;
-            padding: 6px 3px;
-            height: 38px;
+            padding: 8px 4px;
+            height: 44px;
             word-wrap: break-word;
-        }
-        th {
-            font-weight: bold;
+            font-weight: bold; /* Semua teks di dalam tabel menjadi tebal */
         }
 
-        /* Kolom Header & Kategori */
+        /* Header Kategori Jadwal */
         .header-jadwal {
             background-color: #2b78b5;
             color: white;
-            font-weight: bold;
+            font-weight: 900;
             letter-spacing: 1px;
-            font-size: 14px;
+            font-size: 17px; /* Diperbesar */
+            padding: 10px;
         }
         .header-gigi-malam {
             background-color: #1a8a59;
             color: white;
-            font-weight: bold;
-            font-size: 14px;
+            font-weight: 900;
+            font-size: 17px; /* Diperbesar */
+            padding: 10px;
         }
         .header-gigi-siang {
             background-color: #c0392b;
             color: white;
-            font-weight: bold;
-            font-size: 14px;
+            font-weight: 900;
+            font-size: 17px; /* Diperbesar */
+            padding: 10px;
         }
+        
         .poli-label {
             width: 14%;
-            font-weight: bold;
-            font-size: 13px;
+            font-weight: 900;
+            font-size: 15px; /* Diperbesar */
             background: #e1edf7;
             color: #0f3854;
         }
         .hari-header {
             width: 14.33%;
             background: #dcecf5;
-            font-weight: bold;
+            font-weight: 900;
+            font-size: 16px; /* Diperbesar */
             color: #174c70;
-            height: 35px;
+            height: 40px;
         }
 
-        /* Pewarnaan Sel Berdasarkan Gambar Fisik */
+        /* Warna Sel Berdasarkan Gambar Fisik */
         .bg-biru-muda { background-color: #d4e6f1; }
         .bg-hijau-muda { background-color: #d5f5e3; }
         .bg-kuning-muda { background-color: #fcf3cf; }
         .bg-merah-muda { background-color: #fadbd8; }
-        .bg-ungu-muda { background-color: #ebdef0; }
-        .bg-putih { background-color: #ffffff; }
         .bg-kosong { background-color: #2c3e50; }
 
         .dokter-name {
-            font-weight: bold;
-            font-size: 13px;
+            font-weight: 900; /* Extra bold untuk nama dokter */
+            font-size: 15px; /* Diperbesar */
+            color: #000;
         }
 
-        /* Status PWA Offline */
+        /* Status PWA */
         .status-bar {
             text-align: center;
-            font-size: 12px;
+            font-size: 13px;
             margin-top: 10px;
             font-weight: bold;
             color: #154360;
         }
 
         @media (max-width: 768px) {
-            body { padding: 5px; }
-            .paper { padding: 4px; }
-            table { font-size: 11px; }
-            th, td { height: 32px; padding: 3px 1px; }
+            body { padding: 4px; }
+            .paper { padding: 2px; }
+            table { font-size: 13px; }
+            th, td { height: 38px; padding: 4px 2px; }
+            .header-jadwal, .header-gigi-malam, .header-gigi-siang { font-size: 15px; }
+            .dokter-name, .hari-header, .poli-label { font-size: 13px; }
         }
     </style>
 </head>
@@ -254,12 +258,11 @@
     <div class="status-bar">✓ Mode PWA Aktif: Dapat Diakses Secara Online & Offline</div>
 </div>
 
-<!-- Script PWA untuk caching offline -->
 <script>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             const swCode = `
-                const CACHE_NAME = 'jadwal-dokter-v1';
+                const CACHE_NAME = 'jadwal-dokter-v2';
                 self.addEventListener('install', e => {
                     e.waitUntil(
                         caches.open(CACHE_NAME).then(cache => cache.addAll(['./']))
